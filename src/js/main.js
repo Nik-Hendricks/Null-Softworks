@@ -28,6 +28,7 @@ import {PostCardFooter} from '/components/PostCardFooter.js';
 import {CustomInput} from '/components/CustomInput.js';
 import {PieChart} from '/components/PieChart.js';
 import {Text} from '/components/Text.js';
+import {ProductItem} from '/components/ProductItem.js';
 //import all views
 import {SettingsView} from '/views/SettingsView.js';
 import {SoftwareView} from '/views/SoftwareView.js';
@@ -59,28 +60,41 @@ window.onload = () => {
 
 function append_bottom_buttons(){
     window.VM.add_bottom_button('settings', '/Settings');
-    window.VM.add_bottom_button('attach_money', '/Games')
-    window.VM.add_bottom_button('calendar_month','/Software');
+    window.VM.add_bottom_button('sports_esports', '/Games')
+    window.VM.add_bottom_button('terminal','/Software');
 }
 
 
 function register_views(){
-    var last_visited_view = (window.localStorage.lastView !== undefined) ? window.localStorage.lastView: `<agenda-view><agenda-view>`;
+    var last_visited_view = (window.localStorage.lastView !== undefined) ? window.localStorage.lastView: `<home-view></home-view>`;
+    var name = "Null Softworks"
     var routes = {
         "":{
-            title: 'Null Softworks',
+            title: name,
             view: last_visited_view
         },
         "Software":{
-            title:"Software",
-            view:`<software-view></software-view>`
+            title:`${name} > Software`,
+            view:`<software-view></software-view>`,
+            subViews:{
+                "*":{
+                    title:`${name} > Software`,
+                    view:`<software-view></software-view>`
+                }
+            }
         },
         "Games":{
-            title:"Games",
-            view:`<games-view></games-view>`
+            title:`${name} > Games`,
+            view:`<games-view></games-view>`,
+            subViews:{
+                "*":{
+                    title:`${name} > Games`,
+                    view:`<games-view></games-view>`
+                }
+            }
         },
         "Settings":{
-            title:"Setting",
+            title:`${name} > Setting`,
             view:`<settings-view></settings-view>`
         },
     }

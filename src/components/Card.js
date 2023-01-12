@@ -7,6 +7,7 @@ class Card extends Component{
     };
 
     connectedCallback(){
+        console.log('beep')
         this.classList.add('global-resize')
         this.width = this.getAttribute('width');
         this.secondary = this.getAttribute('secondary')
