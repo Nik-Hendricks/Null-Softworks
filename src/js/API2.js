@@ -42,7 +42,7 @@ function removeItemOnce(arr, value) {
     })
 
     return arr;
-  }
+}
 
 function _toggle_array(_array, toggle){
     var ret_arr = _array;
@@ -128,7 +128,6 @@ function _new_db(name){
 
 function _get_app_data(){
     return new Promise(resolve => {
-        console.log(_dbs)
         _dbs['app_data'].find({}, (err, docs) => {
             resolve(docs);
         })
@@ -207,6 +206,31 @@ function searchRoutes(query){
     get_route_list(routes)
 }
 
+function _global_search(query, filter){
+    return new Promise(resolve => {
+        searchRoutes(query)
+        var query_whitelist = ['events'];
+        var i = 0;
+        var res = [];
+        for(var key in filter){
+            if(query_whitelist.includes(filter[key])){
+                _dbs[filter[key]].find({}, (err, docs) => {
+                    searchFor(docs, query).forEach(item => {
+                        res.push(item)
+                    })
+    
+                    console.log(res)
+                    if(i == filter.length){
+                        console.log('done')
+                        resolve(res)
+                    }
+                })
+            }
+            i++
+        }
+    })
+}
+
 
 function loadAPI(){
     _get_app_data().then(res => {
@@ -214,9 +238,6 @@ function loadAPI(){
     })   
 }
 
-setTimeout(() => {
-    loadAPI();
-}, 200);
 
 
 const API2 = {
@@ -238,6 +259,10 @@ const API2 = {
  
     reloadAPI(){
         reloadAPI();
+    },
+
+    load(){
+        loadAPI();
     },
 
     uniqid(prefix = "", random = false) {
@@ -285,7 +310,44 @@ const API2 = {
         _new_db(name);
     },
     
+    get_networks(){
+        return new Promise(resolve => {
+            fetch('/scan_network', {type: "GET"}).then(res => {
+                res.text().then(res => {
+                    console.log(res);
+                    if(res !== '}' && res.length > 0){
+                        resolve(JSON.parse(res))
+                    }
+                })
+            })
+        })
+    },
 
+    send_serial(command){
+        return new Promise(resolve => {
+            fetch(`/send_serial/${command}`, {type: "GET"}).then(res => {
+                res.text().then(res => {
+                    console.log(res)
+                    if(res !== '}' && res.length > 0){
+                        resolve(JSON.parse(res))
+                    }
+                })
+            })
+        })
+    },
+
+    read_serial(){
+        return new Promise(resolve => {
+            fetch('/read_serial', {type: "GET"}).then(res => {
+                res.text().then(res => {
+                    console.log(res.length);
+                    if(res !== '}' && res.length > 0){
+                        resolve(JSON.parse(res))
+                    }
+                })
+            })
+        })
+    }
 
 }
 

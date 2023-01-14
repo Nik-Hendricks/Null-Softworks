@@ -183,35 +183,49 @@ class CustomInput extends Component{
     }
 
     _is_button(){
-        var icon = (this.hasAttribute('icon')) ? this.getAttribute('icon') : 'info';
-        var icon_color = (this.hasAttribute('icon_color')) ? this.getAttribute('icon_color') : 'var(--theme-primary-color)';
-        var icon_el = (icon.includes('fa-')) ? this._fontawesome_icon(icon) : this._material_icon(icon);
-        icon_el.style.overflow = 'hidden'
+        var styles = ['global-resize','default'];
+
+        var button_styles = {
+            "global-resize":{
+                marginBottom:'var(--global-margin)',
+                marginLeft:'var(--global-margin)',
+                marginRight:'0px',
+            },
+            "default":{
+                height:'var(--global-input-height)',
+                background:'var(--theme-card-color)',
+                borderRadius:'var(--global-border-radius)',
+                transition:'ease-in-out var(--global-animation-length)'
+            },
+        }
 
 
-        var text = (this.hasAttribute('text')) ? this.getAttribute('text') : '';
-        var text_el = this._button_text_el(text)
-        var text_color = (this.hasAttribute('text_color')) ? this.getAttribute('text_color') : 'var(--theme-text-primary-color)';
-    
-        var right_text = (this.hasAttribute('right_text')) ? this.getAttribute('right_text'):'';
-        var right_text_el = this._button_right_text_el(right_text)
-        var right_text_color = (this.hasAttribute('right_text_color')) ? this.getAttribute('right_text_color') : ''; 
-    
-        text_el.style.color = text_color;
-        icon_el.style.color = icon_color
-        right_text_el.style.color = right_text_color;
-        this.classList.add('custom-button');
+        styles.forEach(style_selection => {
+            for(var style in button_styles[style_selection]){
+                console.log(style)
+                this.style[style] = button_styles[style_selection][style];
+            }
+        }), 
+        
+
+
         this.innerHTML = ``
-        this.append(icon_el, text_el, right_text_el);
+        var left_icon = window.Builder.createElement('custom-text', {class:'material-icons', width:'4', text:'info', align:'left', color:'var(--theme-primary-color)'}, {float:'left', fontSize:'var(--global-input-font-size)', margin:'var(--global-margin)', lineheight:'var(--global-input-height)'})
+        var text_item = window.Builder.createElement('custom-text', {width:'16', text: this.getAttribute('text'), color:'var(--theme-text-primary-color)', align:'center'},{float:'left', fontSize:'var(--global-input-font-size)', margin:'var(--global-margin)', lineheight:'var(--global-input-height)'});
+        var right_icon = window.Builder.createElement('custom-text', {class:'material-icons', width:'4', text:'info', align:'right', color:'var(--theme-primary-color)'}, {float:'left', fontSize:'var(--global-input-font-size)', margin:'var(--global-margin)', lineheight:'var(--global-input-height)'})
         
+        this.append(left_icon, text_item, right_icon);
         
+        setTimeout(() => {
+            this.resizeComponents(true)
+        }, 200)
     
      
         this.addEventListener("click", () => {
             this.classList.toggle('clicked-animation')
             if(!this.toggle){
                 setTimeout(() => {
-                    this.classList.toggle('clicked-animation')
+                    this.classList.toggle('clicked-animation');
                 }, 200)
             }
         })

@@ -25,12 +25,12 @@ class SoftwareView extends View{
     createBody(){
         var d = document.createElement('div')
         if(this.detail_view){
-            var el = window.Builder.createElement('card-item', {width:'12', square:true})
+            var el = window.Builder.createElement('card-item', {width:'24', square:true})
             el.append(window.Builder.createElement('custom-text', {align:'center', color:'var(--theme-text-primary-color)', width: '12', text:this.name}))
             d.append(el)
         }else{
             this.games.forEach(game => {
-                var el = window.Builder.createElement('card-item', {width:'6', square:true});
+                var el = window.Builder.createElement('card-item', {width:'12', square:true});
                 el.append(window.Builder.createElement('custom-text', {align:'center', color:'var(--theme-text-primary-color)', width: '12', text:game.name}))
                 el.onclick = () => {
                     window.history.pushState('', '', `/Software/${game.name}`)

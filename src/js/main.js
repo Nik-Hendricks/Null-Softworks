@@ -33,34 +33,33 @@ import {ProductItem} from '/components/ProductItem.js';
 import {SettingsView} from '/views/SettingsView.js';
 import {SoftwareView} from '/views/SoftwareView.js';
 import {GamesView} from '/views/GamesView.js';
+import {HomeView} from '/views/HomeView.js';
 
+register_views();
+window.API2.new_db('app_data');
+setTimeout(() => {window.API2.load();},500)
 
-window.onload = () => {
-    window.API2.register_service_worker();
-    register_views();
-    window.API2.new_db('app_data');
+window.DP.on("VIEW_LOAD", () => {
+    console.log("VIEW LOAD")
+    window.VM.resize_components();
+    window.loadingSpinner.hide();
+})
 
-    window.DP.on("VIEW_LOAD", () => {
-        console.log("VIEW LOAD")
-        window.VM.resize_components();
-        window.loadingSpinner.hide();
-    })
+window.DP.on('API_LOAD', () => {
+        console.log("API LOAD")
+        window.VM.begin();
+        append_bottom_buttons();
+})
 
-    window.DP.on('API_LOAD', () => {
-            console.log("API LOAD")
-            window.VM.begin();
-            append_bottom_buttons();
-    })
-
-    window.DP.on('NO_AUTH', () => {
-    })
+window.DP.on('NO_AUTH', () => {
+})
 
     
-}
+
 
 function append_bottom_buttons(){
-    window.VM.add_bottom_button('settings', '/Settings');
     window.VM.add_bottom_button('sports_esports', '/Games')
+    window.VM.add_bottom_button('home', '/Home');
     window.VM.add_bottom_button('terminal','/Software');
 }
 
@@ -72,6 +71,10 @@ function register_views(){
         "":{
             title: name,
             view: last_visited_view
+        },
+        "Home":{
+            title:`${name} > Home`,
+            view:`<home-view></home-view>`
         },
         "Software":{
             title:`${name} > Software`,
