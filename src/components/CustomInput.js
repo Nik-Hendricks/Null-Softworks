@@ -188,7 +188,7 @@ class CustomInput extends Component{
         var button_styles = {
             "global-resize":{
                 marginBottom:'var(--global-margin)',
-                marginLeft:'var(--global-margin)',
+                marginLeft:'',
                 marginRight:'0px',
             },
             "default":{
@@ -210,11 +210,22 @@ class CustomInput extends Component{
 
 
         this.innerHTML = ``
-        var left_icon = window.Builder.createElement('custom-text', {class:'material-icons', width:'4', text:'info', align:'left', color:'var(--theme-primary-color)'}, {float:'left', fontSize:'var(--global-input-font-size)', margin:'var(--global-margin)', lineheight:'var(--global-input-height)'})
-        var text_item = window.Builder.createElement('custom-text', {width:'16', text: this.getAttribute('text'), color:'var(--theme-text-primary-color)', align:'center'},{float:'left', fontSize:'var(--global-input-font-size)', margin:'var(--global-margin)', lineheight:'var(--global-input-height)'});
-        var right_icon = window.Builder.createElement('custom-text', {class:'material-icons', width:'4', text:'info', align:'right', color:'var(--theme-primary-color)'}, {float:'left', fontSize:'var(--global-input-font-size)', margin:'var(--global-margin)', lineheight:'var(--global-input-height)'})
+
+        var el_count = 1;
+        if(this.hasAttribute('icon_left')){
+            el_count++
+        }
+        if(this.hasAttribute('icon_right')){
+            el_count++
+        }
+
+        var w = (el_count == 3) ? '16' : (el_count == '2') ? '20' : '24';
+
+        var left_icon = window.Builder.createElement('custom-text', {class:'material-icons', width:'4', text:'info', align:'center', color:'var(--theme-primary-color)'}, {float:'left', fontSize:'var(--global-input-font-size)', marginTop:'var(--global-margin)', marginBottom:'var(--global-margin)', lineheight:'var(--global-input-height)'})
+        var text_item = window.Builder.createElement('custom-text', {width:w, text: this.getAttribute('text'), color:'var(--theme-text-primary-color)', align:'center'},{float:'left', fontSize:'var(--global-input-font-size)', marginTop:'var(--global-margin)', marginBottom:'var(--global-margin)', lineheight:'var(--global-input-height)'});
+        var right_icon = window.Builder.createElement('custom-text', {class:'material-icons', width:'4', text:'info', align:'center', color:'var(--theme-primary-color)'}, {float:'left', fontSize:'var(--global-input-font-size)', marginTop:'var(--global-margin)', marginBottom:'var(--global-margin)', lineheight:'var(--global-input-height)'})
         
-        this.append(left_icon, text_item, right_icon);
+        this.append((this.hasAttribute('icon_left')) ? left_icon : '', text_item, (this.hasAttribute('icon_right')) ? right_icon : '');
         
         setTimeout(() => {
             this.resizeComponents(true)

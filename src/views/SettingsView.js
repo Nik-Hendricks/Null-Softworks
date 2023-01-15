@@ -9,11 +9,11 @@ class SettingsView extends View{
         this.classList.add('view')
         this.tabs_el = window.Builder.createElement('card-item', {nomargin:true, blank:true},{marginLeft:'0px'});
         this.tab_content_el = window.Builder.createElement('card-item', {nomargin:true, blank:true},{marginLeft:'0px'})
-        this.clear_db_button = window.Builder.createElement('custom-input', {type:'button', icon:'info', text:'Clear DB'}, {});
+        this.clear_db_button = window.Builder.createElement('custom-input', {type:'button', icon_left:'info', text:'Clear DB'}, {});
         this.clear_script_cache_button = window.Builder.createElement('custom-input', {type: 'button', icon:'clear', text:'Clear Script Cache', onclick:'NCache._clear()'},{})
         this.network_ssid_input = window.Builder.createElement('custom-input', {type: 'text', placeholder:'SSID'}, {});
         this.network_password_input = window.Builder.createElement('custom-input', {type:'text', placeholder:'Password'}, {});
-        this.network_submit = window.Builder.createElement('custom-input', {type:'button', icon:'info', text:'Connect'}, {})
+        this.network_submit = window.Builder.createElement('custom-input', {type:'button', icon_left:'info', text:'Connect'}, {})
 
         this.general_settings = [this.clear_db_button, this.clear_script_cache_button];
         this.network_settings = [this.network_ssid_input, this.network_password_input, this.network_submit];
@@ -31,7 +31,7 @@ class SettingsView extends View{
         this.tab_content_el.innerHTML = '';
         for(var tab in this.tabs){
             var width = '8';
-            var e = window.Builder.createElement('custom-input', {type:'button', width: width, text: tab, icon:'info'},{})
+            var e = window.Builder.createElement('custom-input', {type:'button', width: width, text: tab, icon_left:'info'},{margin:'var(--global-margin)'})
             e.onclick = (e) => {
                 this.tab = e.target.parentNode.getAttribute('text')
                 this.update();
