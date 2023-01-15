@@ -183,60 +183,39 @@ class CustomInput extends Component{
     }
 
     _is_button(){
-        var styles = ['global-resize','default'];
+        this.classList.add('custom-button');
 
-        var button_styles = {
-            "global-resize":{
-                marginBottom:'var(--global-margin)',
-                marginLeft:'',
-                marginRight:'0px',
-            },
-            "default":{
-                height:'var(--global-input-height)',
-                background:'var(--theme-card-color)',
-                borderRadius:'var(--global-border-radius)',
-                transition:'ease-in-out var(--global-animation-length)'
-            },
+        var has_text = (this.hasAttribute('text')) ? true : false;
+        var has_icon = (this.hasAttribute('icon')) ? true : false;
+
+        var text = (has_text) ? document.createElement('p') : '';
+        var icon = (has_icon) ? document.createElement('span') : '';
+
+        icon.classList.add('material-icons')
+        icon.innerHTML = this.getAttribute('icon');
+
+
+
+        if(!has_text){
+            icon.style.float = 'left';
+            icon.style.width = '100%';
+            icon.style.textAlign = 'center';
+            icon.style.marginLeft = '0px'
+            icon.style.marginRight = '0px'
+        }else{
+            text.innerHTML = this.getAttribute('text');            
         }
 
 
-        styles.forEach(style_selection => {
-            for(var style in button_styles[style_selection]){
-                console.log(style)
-                this.style[style] = button_styles[style_selection][style];
-            }
-        }), 
-        
+        this.innerHTML = ''
+        this.append(icon, text)
 
-
-        this.innerHTML = ``
-
-        var el_count = 1;
-        if(this.hasAttribute('icon_left')){
-            el_count++
-        }
-        if(this.hasAttribute('icon_right')){
-            el_count++
-        }
-
-        var w = (el_count == 3) ? '16' : (el_count == '2') ? '20' : '24';
-
-        var left_icon = window.Builder.createElement('custom-text', {class:'material-icons', width:'4', text:'info', align:'center', color:'var(--theme-primary-color)'}, {float:'left', fontSize:'var(--global-input-font-size)', marginTop:'var(--global-margin)', marginBottom:'var(--global-margin)', lineheight:'var(--global-input-height)'})
-        var text_item = window.Builder.createElement('custom-text', {width:w, text: this.getAttribute('text'), color:'var(--theme-text-primary-color)', align:'center'},{float:'left', fontSize:'var(--global-input-font-size)', marginTop:'var(--global-margin)', marginBottom:'var(--global-margin)', lineheight:'var(--global-input-height)'});
-        var right_icon = window.Builder.createElement('custom-text', {class:'material-icons', width:'4', text:'info', align:'center', color:'var(--theme-primary-color)'}, {float:'left', fontSize:'var(--global-input-font-size)', marginTop:'var(--global-margin)', marginBottom:'var(--global-margin)', lineheight:'var(--global-input-height)'})
-        
-        this.append((this.hasAttribute('icon_left')) ? left_icon : '', text_item, (this.hasAttribute('icon_right')) ? right_icon : '');
-        
-        setTimeout(() => {
-            this.resizeComponents(true)
-        }, 200)
-    
      
         this.addEventListener("click", () => {
             this.classList.toggle('clicked-animation')
             if(!this.toggle){
                 setTimeout(() => {
-                    this.classList.toggle('clicked-animation');
+                    this.classList.toggle('clicked-animation')
                 }, 200)
             }
         })
