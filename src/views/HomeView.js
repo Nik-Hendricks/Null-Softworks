@@ -7,8 +7,14 @@ class HomeView extends View{
 
     connectedCallback(){
         this.classList.add('view')
-        this.software_button = window.Builder.createElement('custom-input', {type:'button', width:'24', text:'HOME', icon:'info'}, {})
-        this.append(this.software_button)
+        this.sidescroller = window.Builder.createElement('side-scroller', {}, {})
+
+        for(var i = 0; i < 10; i ++){
+            var c = window.Builder.createElement('card-item', {square:true, width:'6'}, {})
+            this.sidescroller.append(c)
+        }
+
+        this.append(this.sidescroller)
         window.DP.dispatch('VIEW_LOAD')
     }
 }
